@@ -77,38 +77,38 @@ export default {
 
     attack: function() {
 
-
       if (this.index == 0) {
-        if (!this.checkWinner()) {
           this.health.monster -= 5;
+          if (this.checkWinner()) {
+            return;}
           this.index = 1;
           this.history.push("Player hits monster for 5%");
 
-        }
-        else{
-return
-        }
-        return
+
       }
       else{
-        if (!this.checkWinner()) {
-          this.health.you -= 7;
+
+          this.health.you -= 6;
+          if (this.checkWinner()) {
+            return;}
           this.index = 0;
           this.history.push("Monster hits Player for 7%");
-
-        }
-        else{
-return
-        }
       }
     },
     specialattack: function() {
       if (this.index == 0) {
-        this.health.monster -= 8;
+
+        this.health.monster -= 7;
+        if(this.checkWinner()){
+          return
+        }
         this.index = 1;
         this.history.push("Player hits monster for 8%");
       } else {
-        this.health.you -= 8;
+        this.health.you -= 6;
+        if(this.checkWinner()){
+          return;
+        }
         this.index = 0;
         this.history.push("Monster hits player for 8%");
       }
@@ -135,8 +135,11 @@ return
 
     },
 
+
     checkWinner: function() {
+
       if (this.health.monster <= 0) {
+        console.log("hi there");
         if (confirm("You won ! | New Game?")) {
           this.rungame();
         } else {
@@ -145,6 +148,7 @@ return
         }
         return true;
       } else if (this.health.you <= 0) {
+        console.log("nothing");
         if (confirm("Monster won ! | New Game?")) {
           this.rungame();
         } else {
