@@ -37,10 +37,11 @@
       </template>
     </div>
 
-    <div class="container log-list">
+    <div class="container log-list" v-if="this.history.length>0">
       <div class="row">
-        <div class="col-sm-12" v-for="(log,e) in history" :key="e">
-          <p>{{log}}</p>
+        <div class="col-sm-12" v-for="(log,e) in history" :key="e"
+        :class="{'monster-background':!log.isPlayer,'player-background':log.isPlayer}">
+          <p>{{log.text}}</p>
         </div>
       </div>
     </div>
@@ -82,7 +83,10 @@ export default {
           if (this.checkWinner()) {
             return;}
           this.index = 1;
-          this.history.push("Player hits monster for 5%");
+          this.history.unshift({
+            isPlayer:true,
+            text:"Player hits monster for 5%"
+});
 
 
       }
@@ -92,7 +96,9 @@ export default {
           if (this.checkWinner()) {
             return;}
           this.index = 0;
-          this.history.push("Monster hits Player for 7%");
+          this.history.unshift({
+            text:"Monster hits Player for 7%",
+isPlayer:false});
       }
     },
     specialattack: function() {
@@ -103,14 +109,18 @@ export default {
           return
         }
         this.index = 1;
-        this.history.push("Player hits monster for 8%");
+        this.history.unshift({
+          text:"Player hits monster for 8%",
+isPlayer:true});
       } else {
         this.health.you -= 6;
         if(this.checkWinner()){
           return;
         }
         this.index = 0;
-        this.history.push("Monster hits player for 8%");
+        this.history.unshift({
+          text:"Monster hits player for 8%",
+isPlayer:false});
       }
     },
 
@@ -119,7 +129,9 @@ export default {
         if (this.health.you <= 95) {
           this.health.you += 5;
           this.index = 1;
-          this.history.push("Player heals 5%");
+          this.history.unshift({
+            text:"Player heals 5%",
+isPlayer:true});
         } else {
           this.index = 1;
         }
@@ -127,7 +139,9 @@ export default {
       } else if (this.health.monster <= 95) {
         this.health.monster += 5;
         this.index = 0;
-        this.history.push("monster hits 5%");
+        this.history.unshift({
+          text:"monster hits 5%",
+isPlayer:false});
       } else {
         this.index = 0;
       }
@@ -240,5 +254,15 @@ export default {
 
 .log-list div:nth-child(even) {
   background-color: #6ba4b6;
+}
+.monster-background{
+
+  font-weight: 500;
+}
+.player-background{
+
+  font-size: 31px;
+  font-weight: 700;
+  color: red;
 }
 </style>
